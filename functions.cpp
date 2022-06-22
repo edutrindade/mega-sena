@@ -20,6 +20,7 @@ void CreateCard(int m[5][12])
 
 void ShowCard(int m[5][12])
 {
+    cout << "\t\t\t\t\t MEGA-SENA\n\n";
     for (int i = 0; i < 5; i++)
     {
         for (int j = 0; j < 12; j++)
@@ -44,7 +45,7 @@ int PrintMainMenu()
     cout << "\t\t\t\t*                              *\n";
     cout << "\t\t\t\t* 1. Criar aposta              *\n";
     cout << "\t\t\t\t* 2. Gerar aposta aleatória    *\n";
-    cout << "\t\t\t\t* 3. Conferir resutlado        *\n";
+    cout << "\t\t\t\t* 3. Conferir resultado        *\n";
     cout << "\t\t\t\t* 4. Sair                      *\n";
     cout << "\t\t\t\t*                              *\n";
     cout << "\t\t\t\t********************************\n";
@@ -74,7 +75,104 @@ int PrintSecondaryMenu()
     return option;
 }
 
-void BetScreen(int amount, int cardUser[])
+bool BetScreen(int amount, int cardUser[])
 {
-    cout << amount;
+    cout << "\nEscolha " << amount << " números diferentes: ";
+    bool valid;
+    do
+    {
+        valid = true;
+        for (int i = 0; i < amount; i++)
+        {
+            cin >> cardUser[i];
+        }
+        for (int i = 0; i < amount; i++)
+        {
+            for (int j = 0; j < amount; j++)
+            {
+                if (i != j && cardUser[i] == cardUser[j])
+                {
+                    valid = false;
+                    break;
+                }
+            }
+        }
+        if (!valid)
+        {
+            cout << "Uma aposta não pode conter números repetidos. Tente novamente: ";
+        }
+    } while (!valid);
+    return true;
+}
+
+bool RandomScreen(int amount, int cardUser[])
+{
+    srand(time(NULL));
+    bool valid;
+    do
+    {
+        valid = true;
+        for (int i = 0; i < amount; i++)
+        {
+            cardUser[i] = rand() % 60 + 1;
+        }
+        for (int i = 0; i < amount; i++)
+        {
+            for (int j = 0; j < amount; j++)
+            {
+                if (i != j && cardUser[i] == cardUser[j])
+                {
+                    valid = false;
+                    break;
+                }
+            }
+        }
+    } while (!valid);
+    cout << "\nAposta aleatória gerada com sucesso!\n\n";
+    for (int i = 0; i < amount; i++)
+    {
+        cout << cardUser[i] << " ";
+    }
+    return true;
+}
+
+void GenerateResult(int result[])
+{
+    srand(time(NULL));
+    bool valid;
+    do
+    {
+        valid = true;
+        for (int i = 0; i < 6; i++)
+        {
+            result[i] = rand() % 60 + 1;
+        }
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                if (i != j && result[i] == result[j])
+                {
+                    valid = false;
+                    break;
+                }
+            }
+        }
+    } while (!valid);
+}
+
+int CompareResult(int result[], int card[]) {
+    int hits = 0;
+    for (int i = 0; i < 6; i++)
+    {
+        for (int j = 0; j < 6; j++)
+        {
+            if (result[i] == card[j])
+            {
+                hits++;
+                break;
+            }
+        }
+    }
+    return hits;
 }
